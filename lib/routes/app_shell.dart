@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../core/constants/app_colors.dart';
 import '../core/constants/app_dimens.dart';
+import '../features/agent/widgets/agent_fab.dart';
 
 /// Shell principal con BottomNavigationBar
 /// Envuelve las pantallas principales del dashboard
@@ -23,6 +24,10 @@ class AppShell extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: child,
+      floatingActionButton: AgentFab(
+        onTap: () => context.push('/agent'),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: AppColors.surface,

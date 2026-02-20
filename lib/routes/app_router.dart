@@ -5,6 +5,7 @@ import '../features/home/screens/dashboard_screen.dart';
 import '../features/transactions/screens/transfers_screen.dart';
 import '../features/transactions/screens/history_screen.dart';
 import '../features/profile/screens/settings_screen.dart';
+import '../features/agent/screens/agent_chat_screen.dart';
 import 'app_shell.dart';
 
 /// HU 1.2 – Sistema de navegación de la aplicación
@@ -57,6 +58,12 @@ class AppRouter {
       GoRoute(
         path: '/login',
         builder: (context, state) => const LoginScreen(),
+      ),
+
+      // Agente IA (fuera del shell, pantalla completa)
+      GoRoute(
+        path: '/agent',
+        builder: (context, state) => const AgentChatScreen(),
       ),
 
       // Shell con BottomNavigationBar

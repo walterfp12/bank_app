@@ -19,6 +19,7 @@ class AppTheme {
         surface: AppColors.surface,
         error: AppColors.error,
         onPrimary: AppColors.textOnPrimary,
+        onSecondary: Colors.white, // Texto blanco sobre elementos secundarios (negros)
         onSurface: AppColors.textPrimary,
       ),
 
