@@ -40,9 +40,7 @@ class AppShell extends StatelessWidget {
           ],
         ),
         child: SafeArea(
-          child: SizedBox(
-            height: AppDimens.bottomNavHeight,
-            child: BottomNavigationBar(
+          child: BottomNavigationBar(
               currentIndex: _currentIndex(context),
               onTap: (index) => _onTap(context, index),
               items: const [
@@ -67,7 +65,6 @@ class AppShell extends StatelessWidget {
                   label: 'Config',
                 ),
               ],
-            ),
           ),
         ),
       ),

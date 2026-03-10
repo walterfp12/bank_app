@@ -114,6 +114,11 @@ Presentación (UI)  →  Dominio (Casos de uso)  →  Datos (Repositorios/API)
      Providers            Repository Interfaces     Models
 ```
 
+## Link video primera entrega funcionalidad 
+
+https://photos.app.goo.gl/4D9CC4VGDdtAGiwv5
+
+
 ## Autor
 
 Walter Fuentes – Curso Flutter Avanzado, 2026
