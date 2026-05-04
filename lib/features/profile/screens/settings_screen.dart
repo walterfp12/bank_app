@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimens.dart';
 import '../../../services/mock_data_service.dart';
 import '../../../services/user_profile.dart';
-import '../../../routes/app_router.dart';
+import '../../auth/presentation/controllers/auth_controller.dart';
 
-/// HU 1.2 - Pantalla de Configuracion / Perfil
-/// Configuracion de usuario, seguridad y preferencias
-class SettingsScreen extends StatelessWidget {
+/// HU 1.2 – Pantalla de Configuración / Perfil
+/// HU 2.3 – Logout via Riverpod AuthController
+class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final user = MockDataService.currentUser;
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Configuracion'),
-      ),
+      appBar: AppBar(title: const Text('Configuración')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppDimens.paddingLG),
         child: Column(
@@ -32,14 +30,14 @@ class SettingsScreen extends StatelessWidget {
               items: [
                 _SettingsItem(
                   icon: Icons.person_outline,
-                  title: 'Informacion Personal',
-                  subtitle: 'Nombre, correo, telefono',
+                  title: 'Información Personal',
+                  subtitle: 'Nombre, correo, teléfono',
                   onTap: () {},
                 ),
                 _SettingsItem(
                   icon: Icons.security,
                   title: 'Seguridad',
-                  subtitle: 'Contrasena, biometria',
+                  subtitle: 'Contraseña, biometría',
                   onTap: () {},
                 ),
                 _SettingsItem(
@@ -57,9 +55,9 @@ class SettingsScreen extends StatelessWidget {
                 _SettingsItem(
                   icon: Icons.language,
                   title: 'Idioma',
-                  subtitle: 'Espanol',
+                  subtitle: 'Español',
                   onTap: () {
-                    // TODO: HU 3.3 - Selector de idioma i18n
+                    // TODO HU 3.3 – Selector de idioma i18n
                   },
                 ),
                 _SettingsItem(
@@ -92,13 +90,11 @@ class SettingsScreen extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(
-                onPressed: () {
-                  AppRouter.setAuthenticated(false);
-                  context.go('/login');
-                },
+                onPressed: () =>
+                    ref.read(authControllerProvider.notifier).logout(),
                 icon: const Icon(Icons.logout, color: AppColors.error),
                 label: Text(
-                  'Cerrar Sesion',
+                  'Cerrar Sesión',
                   style: GoogleFonts.inter(
                     color: AppColors.error,
                     fontWeight: FontWeight.w600,
@@ -106,10 +102,7 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(color: AppColors.error),
-                  minimumSize: const Size(
-                    double.infinity,
-                    AppDimens.buttonHeight,
-                  ),
+                  minimumSize: const Size(double.infinity, AppDimens.buttonHeight),
                 ),
               ),
             ),
@@ -167,10 +160,7 @@ class SettingsScreen extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {},
-            icon: const Icon(
-              Icons.edit_outlined,
-              color: AppColors.primary,
-            ),
+            icon: const Icon(Icons.edit_outlined, color: AppColors.primary),
           ),
         ],
       ),
@@ -201,7 +191,7 @@ class SettingsScreen extends StatelessWidget {
           ),
           child: Column(
             children: items.asMap().entries.map((entry) {
-              final item = entry.value;
+              final item  = entry.value;
               final isLast = entry.key == items.length - 1;
               return Column(
                 children: [
@@ -221,10 +211,7 @@ class SettingsScreen extends StatelessWidget {
                         color: AppColors.textLight,
                       ),
                     ),
-                    trailing: const Icon(
-                      Icons.chevron_right,
-                      color: AppColors.textLight,
-                    ),
+                    trailing: const Icon(Icons.chevron_right, color: AppColors.textLight),
                     onTap: item.onTap,
                   ),
                   if (!isLast) const Divider(height: 1, indent: 56),
@@ -240,8 +227,8 @@ class SettingsScreen extends StatelessWidget {
 
 class _SettingsItem {
   final IconData icon;
-  final String title;
-  final String subtitle;
+  final String   title;
+  final String   subtitle;
   final VoidCallback onTap;
 
   const _SettingsItem({

@@ -1,16 +1,13 @@
-import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import '../core/errors/app_exception.dart';
 import '../core/errors/result.dart';
 
-/// HU 1.3 – Cliente HTTP reutilizable con interceptores
-/// Manejo centralizado de peticiones, errores, headers y tokens
+/// HU 1.3 – Cliente HTTP reutilizable construido sobre Dio
+/// Interceptores de autenticación, logging y manejo de errores centralizado.
 ///
 /// Uso:
 /// ```dart
-/// final client = HttpClient(baseUrl: 'https://api.example.com');
+/// final client = AppHttpClient(baseUrl: 'https://api.example.com');
 /// final result = await client.get<Map>('/accounts');
 /// result.when(
 ///   success: (data) => print(data),
@@ -19,176 +16,157 @@ import '../core/errors/result.dart';
 /// ```
 class AppHttpClient {
   final String baseUrl;
-  final http.Client _client;
   final Duration timeout;
-  String? _authToken;
 
-  // Interceptores: callbacks para logging, analytics, etc.
-  final List<void Function(http.BaseRequest request)> _requestInterceptors = [];
-  final List<void Function(http.Response response)> _responseInterceptors = [];
+  late final Dio _dio;
 
   AppHttpClient({
     required this.baseUrl,
-    http.Client? client,
     this.timeout = const Duration(seconds: 30),
-  }) : _client = client ?? http.Client();
+  }) {
+    _dio = Dio(
+      BaseOptions(
+        baseUrl: baseUrl,
+        connectTimeout: timeout,
+        receiveTimeout: timeout,
+        sendTimeout: timeout,
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      ),
+    );
 
-  /// Configurar token de autenticación
-  void setAuthToken(String? token) {
-    _authToken = token;
+    _dio.interceptors.addAll([
+      _AuthInterceptor(this),
+      _LoggingInterceptor(),
+      _ErrorInterceptor(),
+    ]);
   }
 
-  /// Agregar interceptor de request
-  void addRequestInterceptor(void Function(http.BaseRequest request) interceptor) {
-    _requestInterceptors.add(interceptor);
-  }
+  String? _authToken;
 
-  /// Agregar interceptor de response
-  void addResponseInterceptor(void Function(http.Response response) interceptor) {
-    _responseInterceptors.add(interceptor);
-  }
+  /// Configurar token de autenticación (inyectado en cada request)
+  void setAuthToken(String? token) => _authToken = token;
 
-  /// Headers por defecto
-  Map<String, String> get _defaultHeaders => {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        if (_authToken != null) 'Authorization': 'Bearer $_authToken',
-      };
+  // ─── Métodos HTTP ─────────────────────────────────────────────────────────
 
-  // ─── Métodos HTTP ────────────────────────────────────
-
-  /// GET request
   Future<Result<T>> get<T>(
     String path, {
-    Map<String, String>? queryParams,
-    Map<String, String>? headers,
-    T Function(dynamic json)? fromJson,
+    Map<String, dynamic>? queryParams,
+    Map<String, dynamic>? headers,
+    T Function(Object? json)? fromJson,
   }) async {
-    return _executeRequest(
-      () {
-        final uri = _buildUri(path, queryParams);
-        return _client.get(uri, headers: {..._defaultHeaders, ...?headers});
-      },
+    return _execute(
+      () => _dio.get<Object?>(
+        path,
+        queryParameters: queryParams,
+        options: Options(headers: headers),
+      ),
       fromJson: fromJson,
     );
   }
 
-  /// POST request
   Future<Result<T>> post<T>(
     String path, {
     dynamic body,
-    Map<String, String>? headers,
-    T Function(dynamic json)? fromJson,
+    Map<String, dynamic>? headers,
+    T Function(Object? json)? fromJson,
   }) async {
-    return _executeRequest(
-      () {
-        final uri = _buildUri(path);
-        return _client.post(
-          uri,
-          headers: {..._defaultHeaders, ...?headers},
-          body: body != null ? jsonEncode(body) : null,
-        );
-      },
+    return _execute(
+      () => _dio.post<Object?>(
+        path,
+        data: body,
+        options: Options(headers: headers),
+      ),
       fromJson: fromJson,
     );
   }
 
-  /// PUT request
   Future<Result<T>> put<T>(
     String path, {
     dynamic body,
-    Map<String, String>? headers,
-    T Function(dynamic json)? fromJson,
+    Map<String, dynamic>? headers,
+    T Function(Object? json)? fromJson,
   }) async {
-    return _executeRequest(
-      () {
-        final uri = _buildUri(path);
-        return _client.put(
-          uri,
-          headers: {..._defaultHeaders, ...?headers},
-          body: body != null ? jsonEncode(body) : null,
-        );
-      },
+    return _execute(
+      () => _dio.put<Object?>(
+        path,
+        data: body,
+        options: Options(headers: headers),
+      ),
       fromJson: fromJson,
     );
   }
 
-  /// DELETE request
   Future<Result<T>> delete<T>(
     String path, {
-    Map<String, String>? headers,
-    T Function(dynamic json)? fromJson,
+    Map<String, dynamic>? headers,
+    T Function(Object? json)? fromJson,
   }) async {
-    return _executeRequest(
-      () {
-        final uri = _buildUri(path);
-        return _client.delete(uri, headers: {..._defaultHeaders, ...?headers});
-      },
+    return _execute(
+      () => _dio.delete<Object?>(
+        path,
+        options: Options(headers: headers),
+      ),
       fromJson: fromJson,
     );
   }
 
-  // ─── Internos ────────────────────────────────────────
+  // ─── Interno ──────────────────────────────────────────────────────────────
 
-  Uri _buildUri(String path, [Map<String, String>? queryParams]) {
-    final uri = Uri.parse('$baseUrl$path');
-    if (queryParams != null && queryParams.isNotEmpty) {
-      return uri.replace(queryParameters: queryParams);
-    }
-    return uri;
-  }
-
-  Future<Result<T>> _executeRequest<T>(
-    Future<http.Response> Function() request, {
-    T Function(dynamic json)? fromJson,
+  Future<Result<T>> _execute<T>(
+    Future<Response<Object?>> Function() request, {
+    T Function(Object? json)? fromJson,
   }) async {
     try {
-      final response = await request().timeout(timeout);
-
-      // Ejecutar interceptores de response
-      for (final interceptor in _responseInterceptors) {
-        interceptor(response);
+      final response = await request();
+      final data = response.data;
+      if (fromJson != null && data != null) {
+        return Result.success(fromJson(data));
       }
-
-      // Verificar código de estado
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        if (response.body.isEmpty) {
-          return Result.success(null as T);
-        }
-        final decoded = jsonDecode(response.body);
-        if (fromJson != null) {
-          return Result.success(fromJson(decoded));
-        }
-        return Result.success(decoded as T);
-      }
-
-      // Mapear errores HTTP a excepciones
-      throw _mapStatusCodeToException(response);
-    } on AppException {
-      rethrow;
-    } on SocketException catch (e) {
-      return Result.failure(NetworkException(originalError: e));
-    } on TimeoutException catch (e) {
-      return Result.failure(
-        RequestTimeoutException(originalError: e),
-      );
-    } on FormatException catch (e) {
-      return Result.failure(
-        UnknownException(
-          message: 'Error al procesar la respuesta del servidor.',
-          originalError: e,
-        ),
-      );
+      return Result.success(data as T);
+    } on AppException catch (e) {
+      return Result.failure(e);
+    } on DioException catch (e) {
+      return Result.failure(_mapDioException(e));
     } catch (e) {
       return Result.failure(UnknownException(originalError: e));
     }
   }
 
-  AppException _mapStatusCodeToException(http.Response response) {
-    final body = response.body.isNotEmpty ? jsonDecode(response.body) : null;
+  AppException _mapDioException(DioException e) {
+    switch (e.type) {
+      case DioExceptionType.connectionTimeout:
+      case DioExceptionType.receiveTimeout:
+      case DioExceptionType.sendTimeout:
+        return RequestTimeoutException(originalError: e);
+
+      case DioExceptionType.connectionError:
+        return NetworkException(originalError: e);
+
+      case DioExceptionType.badResponse:
+        return _mapStatusCode(e.response);
+
+      case DioExceptionType.cancel:
+        return UnknownException(
+          message: 'La solicitud fue cancelada.',
+          originalError: e,
+        );
+
+      default:
+        return UnknownException(originalError: e);
+    }
+  }
+
+  AppException _mapStatusCode(Response<Object?>? response) {
+    if (response == null) return const NetworkException();
+
+    final statusCode = response.statusCode ?? 0;
+    final body = response.data;
     final message = body is Map ? body['message'] as String? : null;
 
-    return switch (response.statusCode) {
+    return switch (statusCode) {
       401 => UnauthorizedException(
           message: message ?? 'Sesión expirada. Inicia sesión nuevamente.',
         ),
@@ -203,11 +181,11 @@ class AppHttpClient {
           fieldErrors: _parseFieldErrors(body),
         ),
       >= 500 => ServerException(
-          statusCode: response.statusCode,
+          statusCode: statusCode,
           message: message ?? 'Error en el servidor.',
         ),
       _ => UnknownException(
-          message: message ?? 'Error HTTP ${response.statusCode}',
+          message: message ?? 'Error HTTP $statusCode',
         ),
     };
   }
@@ -219,13 +197,68 @@ class AppHttpClient {
     return errors.map(
       (key, value) => MapEntry(
         key.toString(),
-        (value is List) ? value.map((e) => e.toString()).toList() : [value.toString()],
+        (value is List)
+            ? value.map((e) => e.toString()).toList()
+            : [value.toString()],
       ),
     );
   }
+}
 
-  /// Cerrar cliente
-  void dispose() {
-    _client.close();
+// ─── Interceptores ────────────────────────────────────────────────────────────
+
+/// Inyecta Bearer token en cada request si está disponible
+class _AuthInterceptor extends Interceptor {
+  final AppHttpClient client;
+  _AuthInterceptor(this.client);
+
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    if (client._authToken != null) {
+      options.headers['Authorization'] = 'Bearer ${client._authToken}';
+    }
+    handler.next(options);
+  }
+}
+
+/// Log de request y response en modo debug
+class _LoggingInterceptor extends Interceptor {
+  @override
+  void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
+    assert(() {
+      // ignore: avoid_print
+      print('[DIO] → ${options.method} ${options.uri}');
+      return true;
+    }());
+    handler.next(options);
+  }
+
+  @override
+  void onResponse(Response<Object?> response, ResponseInterceptorHandler handler) {
+    assert(() {
+      // ignore: avoid_print
+      print('[DIO] ← ${response.statusCode} ${response.requestOptions.uri}');
+      return true;
+    }());
+    handler.next(response);
+  }
+
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    assert(() {
+      // ignore: avoid_print
+      print('[DIO] ✗ ${err.type} ${err.requestOptions.uri}');
+      return true;
+    }());
+    handler.next(err);
+  }
+}
+
+/// Convierte DioException en AppException antes de que salga del interceptor
+class _ErrorInterceptor extends Interceptor {
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    // Dejamos que _execute maneje el mapeo; solo hacemos pass-through
+    handler.next(err);
   }
 }
