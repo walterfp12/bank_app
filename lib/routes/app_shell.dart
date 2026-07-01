@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../core/constants/app_colors.dart';
-import '../core/constants/app_dimens.dart';
 import '../features/agent/widgets/agent_fab.dart';
 
 /// Shell principal con BottomNavigationBar

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'core/i18n/locale_controller.dart';
 import 'core/providers/infrastructure_providers.dart';
 import 'core/theme/app_theme.dart';
 import 'features/auth/presentation/controllers/auth_controller.dart';
+import 'l10n/app_localizations.dart';
 import 'routes/app_router.dart';
 
 /// Punto de entrada – BAM Wallet & Transfers
@@ -50,12 +52,17 @@ class _BankAppState extends ConsumerState<BankApp> {
   @override
   Widget build(BuildContext context) {
     final router = ref.watch(routerProvider);
+    final locale = ref.watch(localeControllerProvider);
 
     return MaterialApp.router(
       title:                    'BAM Wallet',
       debugShowCheckedModeBanner: false,
       theme:                    AppTheme.lightTheme,
       routerConfig:             router,
+      // HU 3.3 – Internacionalización
+      locale:                   locale,
+      supportedLocales:         AppLocalizations.supportedLocales,
+      localizationsDelegates:   AppLocalizations.localizationsDelegates,
     );
   }
 }

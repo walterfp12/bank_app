@@ -1,0 +1,53 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "BAM Wallet",
+
+  "dashboardGreeting": "Hi 👋",
+  "dashboardTotalBalance": "Total Balance",
+  "dashboardMonthChange": "+2.5% this month",
+  "dashboardQuickActions": "Quick Actions",
+  "dashboardMyCards": "My Cards",
+  "dashboardMyAccounts": "My Accounts",
+  "dashboardRecentTransactions": "Recent Transactions",
+  "dashboardSeeAll": "See all",
+
+  "actionTransfer": "Transfer",
+  "actionPay": "Pay",
+  "actionQr": "QR",
+  "actionHistory": "History",
+
+  "stateLoadingDashboard": "Loading your products…",
+  "stateErrorTitle": "Something went wrong",
+  "stateRetry": "Retry",
+  "cacheBadge": "Offline data",
+
+  "cardDebit": "Debit",
+  "cardCredit": "Credit",
+  "accountSavings": "Savings Account",
+  "accountChecking": "Checking Account",
+  "accountCredit": "Credit Card",
+
+  "settingsTitle": "Settings",
+  "settingsAccount": "Account",
+  "settingsPersonalInfo": "Personal Information",
+  "settingsPersonalInfoSub": "Name, email, phone",
+  "settingsSecurity": "Security",
+  "settingsSecuritySub": "Password, biometrics",
+  "settingsNotifications": "Notifications",
+  "settingsNotificationsSub": "Push, email, SMS",
+  "settingsPreferences": "Preferences",
+  "settingsLanguage": "Language",
+  "settingsAppearance": "Appearance",
+  "settingsAppearanceSub": "Light theme",
+  "settingsSupport": "Support",
+  "settingsHelp": "Help & Support",
+  "settingsHelpSub": "FAQ, contact",
+  "settingsAbout": "About",
+  "settingsAboutSub": "BAM Wallet v1.0.0",
+  "settingsLogout": "Log Out",
+
+  "languageSpanish": "Spanish",
+  "languageEnglish": "English",
+  "languageSelectTitle": "Choose language"
+}

@@ -9,6 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # Internacionalización (HU 3.3)
+  flutter_localizations:
+    sdk: flutter
   # Navegación
   go_router: ^14.8.1
   # Estado
@@ -40,6 +43,9 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  # Genera AppLocalizations desde los archivos .arb (HU 3.3)
+  generate: true
 
   assets:
     - assets/images/

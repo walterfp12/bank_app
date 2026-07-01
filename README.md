@@ -86,15 +86,17 @@ lib/
 ├── core/
 │   ├── constants/          # AppColors, AppDimens, ApiConstants
 │   ├── errors/             # Modelo de errores centralizado
+│   ├── i18n/               # LocaleController (idioma persistido)
 │   ├── providers/          # infrastructure_providers (SharedPrefs, HttpClient)
 │   ├── theme/              # Tema Material 3
 │   └── utils/              # Validators, formatters
 ├── features/
 │   ├── auth/               # Autenticación — Clean Architecture completa
+│   ├── dashboard/          # Dashboard productos/saldos (Domain/Data/Presentation)
 │   ├── agent/              # Pantalla Agente IA (AgentChatScreen)
-│   ├── home/               # Dashboard
 │   ├── transactions/       # Transferencias e historial
 │   └── profile/            # Configuración / Settings
+├── l10n/                   # app_es.arb, app_en.arb + AppLocalizations generado
 ├── routes/                 # app_router.dart (GoRouter + RouterNotifier)
 ├── services/               # HttpClient (Dio), MockDataService
 └── main.dart               # Entry point con ProviderScope
@@ -177,6 +179,27 @@ Login → DummyJSON API (Dio) → Token JWT → SharedPreferences
 
 ---
 
+## Módulo 3 — Dashboard, estados e i18n
+
+El feature `dashboard` es la referencia de arquitectura: 3 capas
+(Domain / Data / Presentation), todo con Freezed.
+
+- **Estado propio, no listas.** `DashboardController` es un `Notifier<DashboardState>`
+  y `DashboardState` es una `sealed class` de Freezed con 4 variantes:
+  `initial`, `loading`, `loaded` y `error`. La pantalla hace pattern matching
+  exhaustivo, así que carga y error siempre se manejan.
+- **Mock en su capa.** Los datos de ejemplo viven en `DashboardRemoteDataSourceMock`
+  (capa Data), no en la UI. Cambiar a Firebase en el M4 es reemplazar solo esa clase.
+- **Caché local.** El repositorio guarda el último dashboard en `SharedPreferences`
+  y lo usa como respaldo sin conexión.
+- **Distintos tipos de tarjeta** (débito / crédito / prepago) en un carrusel.
+- **i18n** con archivos `.arb` + `flutter gen-l10n`. El idioma se cambia desde
+  Configuración y se guarda con `LocaleController`.
+
+Detalle y justificación técnica en [`docs/DECISIONES_TECNICAS.md`](docs/DECISIONES_TECNICAS.md).
+
+---
+
 ## Backlog del Proyecto
 
 | Módulo | HU | Descripción | Estado |
@@ -187,9 +210,9 @@ Login → DummyJSON API (Dio) → Token JWT → SharedPreferences
 | 2 - Clean Arch | HU 2.1 | Clean Architecture para Auth | ✅ |
 | 2 - Clean Arch | HU 2.2 | Login con validaciones + DummyJSON | ✅ |
 | 2 - Clean Arch | HU 2.3 | Gestión de sesión + Route Guard | ✅ |
-| 3 - Modularización | HU 3.1 | Features modulares | 🔲 |
-| 3 - Modularización | HU 3.2 | Dashboard productos | 🔲 |
-| 3 - Modularización | HU 3.3 | i18n | 🔲 |
+| 3 - Modularización | HU 3.1 | Features modulares + doc técnico | ✅ |
+| 3 - Modularización | HU 3.2 | Dashboard productos (estados + caché) | ✅ |
+| 3 - Modularización | HU 3.3 | i18n español/inglés + selector | ✅ |
 | 4 - Firebase | HU 4.1 | Firebase Auth | 🔲 |
 | 4 - Firebase | HU 4.2 | Historial Firestore | 🔲 |
 | 4 - Firebase | HU 4.3 | Push Notifications | 🔲 |
@@ -203,6 +226,7 @@ Login → DummyJSON API (Dio) → Token JWT → SharedPreferences
 | Módulo | Link |
 |---|---|
 | Módulo 1 — Fundamentos | https://photos.app.goo.gl/4D9CC4VGDdtAGiwv5 |
+| Módulo 2 — Autenticación | https://photos.app.goo.gl/YimSyuPhREPBbvnt7 |
 
 ---
 

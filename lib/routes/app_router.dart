@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../features/auth/presentation/providers/router_notifier.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
-import '../features/home/screens/dashboard_screen.dart';
+import '../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../features/transactions/screens/transfers_screen.dart';
 import '../features/transactions/screens/history_screen.dart';
 import '../features/profile/screens/settings_screen.dart';
