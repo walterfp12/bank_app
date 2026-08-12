@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/errors/app_exception.dart';
 import '../../domain/usecases/get_dashboard_data_usecase.dart';
 import '../providers/dashboard_providers.dart';
 import '../states/dashboard_state.dart';
@@ -28,14 +29,10 @@ class DashboardController extends Notifier<DashboardState> {
     result.when(
       success: (data) => state = DashboardState.loaded(data: data),
       failure: (error) =>
-          state = DashboardState.error(message: _mapError(error)),
+          state = DashboardState.error(message: error.friendlyMessage),
     );
   }
 
-  String _mapError(Exception error) {
-    final text = error.toString();
-    return text.isEmpty ? 'No se pudieron cargar tus productos.' : text;
-  }
 }
 
 /// Provider del controller — expone el [DashboardState] a la UI.

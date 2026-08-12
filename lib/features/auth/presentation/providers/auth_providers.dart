@@ -2,8 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../core/providers/infrastructure_providers.dart';
 import '../../application/services/auth_service.dart';
 import '../../application/services/session_service.dart';
-import '../../data/datasources/auth_local_datasource.dart';
-import '../../data/datasources/auth_remote_datasource.dart';
+import '../../data/datasources/auth_firebase_datasource.dart';
+import '../../data/datasources/auth_secure_datasource.dart';
 import '../../data/repositories/auth_repository_impl.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/get_current_session_usecase.dart';
@@ -12,12 +12,14 @@ import '../../domain/usecases/logout_usecase.dart';
 
 // ─── Data Layer ───────────────────────────────────────────────────────────────
 
+/// HU 4.1 – Firebase Authentication como fuente remota
 final authRemoteDataSourceProvider = Provider<AuthRemoteDataSource>((ref) {
-  return AuthRemoteDataSourceImpl(ref.read(httpClientProvider));
+  return AuthFirebaseDataSource(ref.read(firebaseAuthProvider));
 });
 
+/// HU 4.1 – Almacenamiento seguro cifrado para la sesión
 final authLocalDataSourceProvider = Provider<AuthLocalDataSource>((ref) {
-  return AuthLocalDataSourceImpl(ref.read(sharedPreferencesProvider));
+  return AuthSecureDataSource(ref.read(secureStorageProvider));
 });
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {

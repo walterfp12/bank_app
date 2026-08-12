@@ -112,3 +112,16 @@ class InsufficientFundsException extends AppException {
     super.originalError,
   });
 }
+
+/// Texto listo para mostrarle al usuario.
+///
+/// `Exception.toString()` de un [AppException] incluye el prefijo técnico
+/// (`AppException(CODE): ...`), que no debe llegar a la interfaz. Esta
+/// extensión devuelve únicamente el mensaje legible.
+extension AppExceptionMessage on Exception {
+  String get friendlyMessage {
+    final self = this;
+    if (self is AppException) return self.message;
+    return 'Ocurrió un error inesperado.';
+  }
+}

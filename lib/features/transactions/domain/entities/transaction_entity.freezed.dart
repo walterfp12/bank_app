@@ -1,0 +1,317 @@
+// coverage:ignore-file
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
+
+part of 'transaction_entity.dart';
+
+// **************************************************************************
+// FreezedGenerator
+// **************************************************************************
+
+T _$identity<T>(T value) => value;
+
+final _privateConstructorUsedError = UnsupportedError(
+  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
+);
+
+/// @nodoc
+mixin _$TransactionEntity {
+  String get id => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  String get description => throw _privateConstructorUsedError;
+  double get amount => throw _privateConstructorUsedError;
+  TransactionKind get kind => throw _privateConstructorUsedError;
+  TransactionStatus get status => throw _privateConstructorUsedError;
+  DateTime get date => throw _privateConstructorUsedError;
+  String get category => throw _privateConstructorUsedError;
+
+  /// Create a copy of TransactionEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $TransactionEntityCopyWith<TransactionEntity> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $TransactionEntityCopyWith<$Res> {
+  factory $TransactionEntityCopyWith(
+    TransactionEntity value,
+    $Res Function(TransactionEntity) then,
+  ) = _$TransactionEntityCopyWithImpl<$Res, TransactionEntity>;
+  @useResult
+  $Res call({
+    String id,
+    String title,
+    String description,
+    double amount,
+    TransactionKind kind,
+    TransactionStatus status,
+    DateTime date,
+    String category,
+  });
+}
+
+/// @nodoc
+class _$TransactionEntityCopyWithImpl<$Res, $Val extends TransactionEntity>
+    implements $TransactionEntityCopyWith<$Res> {
+  _$TransactionEntityCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of TransactionEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? title = null,
+    Object? description = null,
+    Object? amount = null,
+    Object? kind = null,
+    Object? status = null,
+    Object? date = null,
+    Object? category = null,
+  }) {
+    return _then(
+      _value.copyWith(
+            id: null == id
+                ? _value.id
+                : id // ignore: cast_nullable_to_non_nullable
+                      as String,
+            title: null == title
+                ? _value.title
+                : title // ignore: cast_nullable_to_non_nullable
+                      as String,
+            description: null == description
+                ? _value.description
+                : description // ignore: cast_nullable_to_non_nullable
+                      as String,
+            amount: null == amount
+                ? _value.amount
+                : amount // ignore: cast_nullable_to_non_nullable
+                      as double,
+            kind: null == kind
+                ? _value.kind
+                : kind // ignore: cast_nullable_to_non_nullable
+                      as TransactionKind,
+            status: null == status
+                ? _value.status
+                : status // ignore: cast_nullable_to_non_nullable
+                      as TransactionStatus,
+            date: null == date
+                ? _value.date
+                : date // ignore: cast_nullable_to_non_nullable
+                      as DateTime,
+            category: null == category
+                ? _value.category
+                : category // ignore: cast_nullable_to_non_nullable
+                      as String,
+          )
+          as $Val,
+    );
+  }
+}
+
+/// @nodoc
+abstract class _$$TransactionEntityImplCopyWith<$Res>
+    implements $TransactionEntityCopyWith<$Res> {
+  factory _$$TransactionEntityImplCopyWith(
+    _$TransactionEntityImpl value,
+    $Res Function(_$TransactionEntityImpl) then,
+  ) = __$$TransactionEntityImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({
+    String id,
+    String title,
+    String description,
+    double amount,
+    TransactionKind kind,
+    TransactionStatus status,
+    DateTime date,
+    String category,
+  });
+}
+
+/// @nodoc
+class __$$TransactionEntityImplCopyWithImpl<$Res>
+    extends _$TransactionEntityCopyWithImpl<$Res, _$TransactionEntityImpl>
+    implements _$$TransactionEntityImplCopyWith<$Res> {
+  __$$TransactionEntityImplCopyWithImpl(
+    _$TransactionEntityImpl _value,
+    $Res Function(_$TransactionEntityImpl) _then,
+  ) : super(_value, _then);
+
+  /// Create a copy of TransactionEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? id = null,
+    Object? title = null,
+    Object? description = null,
+    Object? amount = null,
+    Object? kind = null,
+    Object? status = null,
+    Object? date = null,
+    Object? category = null,
+  }) {
+    return _then(
+      _$TransactionEntityImpl(
+        id: null == id
+            ? _value.id
+            : id // ignore: cast_nullable_to_non_nullable
+                  as String,
+        title: null == title
+            ? _value.title
+            : title // ignore: cast_nullable_to_non_nullable
+                  as String,
+        description: null == description
+            ? _value.description
+            : description // ignore: cast_nullable_to_non_nullable
+                  as String,
+        amount: null == amount
+            ? _value.amount
+            : amount // ignore: cast_nullable_to_non_nullable
+                  as double,
+        kind: null == kind
+            ? _value.kind
+            : kind // ignore: cast_nullable_to_non_nullable
+                  as TransactionKind,
+        status: null == status
+            ? _value.status
+            : status // ignore: cast_nullable_to_non_nullable
+                  as TransactionStatus,
+        date: null == date
+            ? _value.date
+            : date // ignore: cast_nullable_to_non_nullable
+                  as DateTime,
+        category: null == category
+            ? _value.category
+            : category // ignore: cast_nullable_to_non_nullable
+                  as String,
+      ),
+    );
+  }
+}
+
+/// @nodoc
+
+class _$TransactionEntityImpl extends _TransactionEntity {
+  const _$TransactionEntityImpl({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.amount,
+    required this.kind,
+    required this.status,
+    required this.date,
+    this.category = '',
+  }) : super._();
+
+  @override
+  final String id;
+  @override
+  final String title;
+  @override
+  final String description;
+  @override
+  final double amount;
+  @override
+  final TransactionKind kind;
+  @override
+  final TransactionStatus status;
+  @override
+  final DateTime date;
+  @override
+  @JsonKey()
+  final String category;
+
+  @override
+  String toString() {
+    return 'TransactionEntity(id: $id, title: $title, description: $description, amount: $amount, kind: $kind, status: $status, date: $date, category: $category)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$TransactionEntityImpl &&
+            (identical(other.id, id) || other.id == id) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.description, description) ||
+                other.description == description) &&
+            (identical(other.amount, amount) || other.amount == amount) &&
+            (identical(other.kind, kind) || other.kind == kind) &&
+            (identical(other.status, status) || other.status == status) &&
+            (identical(other.date, date) || other.date == date) &&
+            (identical(other.category, category) ||
+                other.category == category));
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    runtimeType,
+    id,
+    title,
+    description,
+    amount,
+    kind,
+    status,
+    date,
+    category,
+  );
+
+  /// Create a copy of TransactionEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$TransactionEntityImplCopyWith<_$TransactionEntityImpl> get copyWith =>
+      __$$TransactionEntityImplCopyWithImpl<_$TransactionEntityImpl>(
+        this,
+        _$identity,
+      );
+}
+
+abstract class _TransactionEntity extends TransactionEntity {
+  const factory _TransactionEntity({
+    required final String id,
+    required final String title,
+    required final String description,
+    required final double amount,
+    required final TransactionKind kind,
+    required final TransactionStatus status,
+    required final DateTime date,
+    final String category,
+  }) = _$TransactionEntityImpl;
+  const _TransactionEntity._() : super._();
+
+  @override
+  String get id;
+  @override
+  String get title;
+  @override
+  String get description;
+  @override
+  double get amount;
+  @override
+  TransactionKind get kind;
+  @override
+  TransactionStatus get status;
+  @override
+  DateTime get date;
+  @override
+  String get category;
+
+  /// Create a copy of TransactionEntity
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$TransactionEntityImplCopyWith<_$TransactionEntityImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}

@@ -17,12 +17,11 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$AuthUser {
-  int get id => throw _privateConstructorUsedError;
-  String get username => throw _privateConstructorUsedError;
+  /// uid de Firebase
+  String get id => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
-  String get firstName => throw _privateConstructorUsedError;
-  String get lastName => throw _privateConstructorUsedError;
-  String get image => throw _privateConstructorUsedError;
+  String get displayName => throw _privateConstructorUsedError;
+  String get photoUrl => throw _privateConstructorUsedError;
 
   /// Create a copy of AuthUser
   /// with the given fields replaced by the non-null parameter values.
@@ -36,14 +35,7 @@ abstract class $AuthUserCopyWith<$Res> {
   factory $AuthUserCopyWith(AuthUser value, $Res Function(AuthUser) then) =
       _$AuthUserCopyWithImpl<$Res, AuthUser>;
   @useResult
-  $Res call({
-    int id,
-    String username,
-    String email,
-    String firstName,
-    String lastName,
-    String image,
-  });
+  $Res call({String id, String email, String displayName, String photoUrl});
 }
 
 /// @nodoc
@@ -62,37 +54,27 @@ class _$AuthUserCopyWithImpl<$Res, $Val extends AuthUser>
   @override
   $Res call({
     Object? id = null,
-    Object? username = null,
     Object? email = null,
-    Object? firstName = null,
-    Object? lastName = null,
-    Object? image = null,
+    Object? displayName = null,
+    Object? photoUrl = null,
   }) {
     return _then(
       _value.copyWith(
             id: null == id
                 ? _value.id
                 : id // ignore: cast_nullable_to_non_nullable
-                      as int,
-            username: null == username
-                ? _value.username
-                : username // ignore: cast_nullable_to_non_nullable
                       as String,
             email: null == email
                 ? _value.email
                 : email // ignore: cast_nullable_to_non_nullable
                       as String,
-            firstName: null == firstName
-                ? _value.firstName
-                : firstName // ignore: cast_nullable_to_non_nullable
+            displayName: null == displayName
+                ? _value.displayName
+                : displayName // ignore: cast_nullable_to_non_nullable
                       as String,
-            lastName: null == lastName
-                ? _value.lastName
-                : lastName // ignore: cast_nullable_to_non_nullable
-                      as String,
-            image: null == image
-                ? _value.image
-                : image // ignore: cast_nullable_to_non_nullable
+            photoUrl: null == photoUrl
+                ? _value.photoUrl
+                : photoUrl // ignore: cast_nullable_to_non_nullable
                       as String,
           )
           as $Val,
@@ -109,14 +91,7 @@ abstract class _$$AuthUserImplCopyWith<$Res>
   ) = __$$AuthUserImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({
-    int id,
-    String username,
-    String email,
-    String firstName,
-    String lastName,
-    String image,
-  });
+  $Res call({String id, String email, String displayName, String photoUrl});
 }
 
 /// @nodoc
@@ -134,37 +109,27 @@ class __$$AuthUserImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? username = null,
     Object? email = null,
-    Object? firstName = null,
-    Object? lastName = null,
-    Object? image = null,
+    Object? displayName = null,
+    Object? photoUrl = null,
   }) {
     return _then(
       _$AuthUserImpl(
         id: null == id
             ? _value.id
             : id // ignore: cast_nullable_to_non_nullable
-                  as int,
-        username: null == username
-            ? _value.username
-            : username // ignore: cast_nullable_to_non_nullable
                   as String,
         email: null == email
             ? _value.email
             : email // ignore: cast_nullable_to_non_nullable
                   as String,
-        firstName: null == firstName
-            ? _value.firstName
-            : firstName // ignore: cast_nullable_to_non_nullable
+        displayName: null == displayName
+            ? _value.displayName
+            : displayName // ignore: cast_nullable_to_non_nullable
                   as String,
-        lastName: null == lastName
-            ? _value.lastName
-            : lastName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        image: null == image
-            ? _value.image
-            : image // ignore: cast_nullable_to_non_nullable
+        photoUrl: null == photoUrl
+            ? _value.photoUrl
+            : photoUrl // ignore: cast_nullable_to_non_nullable
                   as String,
       ),
     );
@@ -173,32 +138,29 @@ class __$$AuthUserImplCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$AuthUserImpl implements _AuthUser {
+class _$AuthUserImpl extends _AuthUser {
   const _$AuthUserImpl({
     required this.id,
-    required this.username,
     required this.email,
-    required this.firstName,
-    required this.lastName,
-    required this.image,
-  });
+    this.displayName = '',
+    this.photoUrl = '',
+  }) : super._();
 
+  /// uid de Firebase
   @override
-  final int id;
-  @override
-  final String username;
+  final String id;
   @override
   final String email;
   @override
-  final String firstName;
+  @JsonKey()
+  final String displayName;
   @override
-  final String lastName;
-  @override
-  final String image;
+  @JsonKey()
+  final String photoUrl;
 
   @override
   String toString() {
-    return 'AuthUser(id: $id, username: $username, email: $email, firstName: $firstName, lastName: $lastName, image: $image)';
+    return 'AuthUser(id: $id, email: $email, displayName: $displayName, photoUrl: $photoUrl)';
   }
 
   @override
@@ -207,19 +169,16 @@ class _$AuthUserImpl implements _AuthUser {
         (other.runtimeType == runtimeType &&
             other is _$AuthUserImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.username, username) ||
-                other.username == username) &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.firstName, firstName) ||
-                other.firstName == firstName) &&
-            (identical(other.lastName, lastName) ||
-                other.lastName == lastName) &&
-            (identical(other.image, image) || other.image == image));
+            (identical(other.displayName, displayName) ||
+                other.displayName == displayName) &&
+            (identical(other.photoUrl, photoUrl) ||
+                other.photoUrl == photoUrl));
   }
 
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, username, email, firstName, lastName, image);
+      Object.hash(runtimeType, id, email, displayName, photoUrl);
 
   /// Create a copy of AuthUser
   /// with the given fields replaced by the non-null parameter values.
@@ -230,28 +189,24 @@ class _$AuthUserImpl implements _AuthUser {
       __$$AuthUserImplCopyWithImpl<_$AuthUserImpl>(this, _$identity);
 }
 
-abstract class _AuthUser implements AuthUser {
+abstract class _AuthUser extends AuthUser {
   const factory _AuthUser({
-    required final int id,
-    required final String username,
+    required final String id,
     required final String email,
-    required final String firstName,
-    required final String lastName,
-    required final String image,
+    final String displayName,
+    final String photoUrl,
   }) = _$AuthUserImpl;
+  const _AuthUser._() : super._();
 
+  /// uid de Firebase
   @override
-  int get id;
-  @override
-  String get username;
+  String get id;
   @override
   String get email;
   @override
-  String get firstName;
+  String get displayName;
   @override
-  String get lastName;
-  @override
-  String get image;
+  String get photoUrl;
 
   /// Create a copy of AuthUser
   /// with the given fields replaced by the non-null parameter values.

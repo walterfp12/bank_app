@@ -1,29 +1,36 @@
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/errors/result.dart';
 import '../models/auth_session_model.dart';
 
-/// DataSource local de autenticación – capa Data
-/// Persiste la sesión en SharedPreferences usando AuthSessionModel (Freezed + JSON).
+/// DataSource local de autenticación – capa Data (HU 4.1).
+///
+/// **Almacenamiento seguro de sesión**: usa `flutter_secure_storage`, que en
+/// Android guarda los datos cifrados con la Keystore del sistema (y en iOS en
+/// el Keychain). A diferencia de SharedPreferences, el token no queda en texto
+/// plano dentro del sandbox de la app.
 abstract class AuthLocalDataSource {
   Future<Result<void>> saveSession(AuthSessionModel session);
   Future<AuthSessionModel?> getSession();
   Future<Result<void>> clearSession();
 }
 
-class AuthLocalDataSourceImpl implements AuthLocalDataSource {
-  final SharedPreferences _prefs;
+class AuthSecureDataSource implements AuthLocalDataSource {
+  final FlutterSecureStorage _storage;
   static const _sessionKey = 'bam_auth_session';
 
-  const AuthLocalDataSourceImpl(this._prefs);
+  const AuthSecureDataSource(this._storage);
 
   @override
   Future<Result<void>> saveSession(AuthSessionModel session) async {
     try {
-      await _prefs.setString(_sessionKey, jsonEncode(session.toJson()));
+      await _storage.write(
+        key: _sessionKey,
+        value: jsonEncode(session.toJson()),
+      );
       return Result.success(null);
-    } catch (e) {
+    } on Exception catch (e) {
       return Result.failure(CacheException(originalError: e));
     }
   }
@@ -31,18 +38,20 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<AuthSessionModel?> getSession() async {
     try {
-      final raw = _prefs.getString(_sessionKey);
+      final raw = await _storage.read(key: _sessionKey);
       if (raw == null) return null;
+
       final model = AuthSessionModel.fromJson(
         jsonDecode(raw) as Map<String, dynamic>,
       );
-      // Eliminar sesión expirada automáticamente
+
+      // Sesión vencida: se descarta del almacenamiento seguro.
       if (model.toDomain().isExpired) {
-        await _prefs.remove(_sessionKey);
+        await _storage.delete(key: _sessionKey);
         return null;
       }
       return model;
-    } catch (_) {
+    } on Exception {
       return null;
     }
   }
@@ -50,9 +59,9 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<Result<void>> clearSession() async {
     try {
-      await _prefs.remove(_sessionKey);
+      await _storage.delete(key: _sessionKey);
       return Result.success(null);
-    } catch (e) {
+    } on Exception catch (e) {
       return Result.failure(CacheException(originalError: e));
     }
   }

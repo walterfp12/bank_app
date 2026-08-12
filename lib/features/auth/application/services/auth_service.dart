@@ -15,8 +15,8 @@ class AuthService {
   })  : _loginUseCase  = loginUseCase,
         _logoutUseCase = logoutUseCase;
 
-  Future<Result<AuthSession>> login(String username, String password) =>
-      _loginUseCase(username, password);
+  Future<Result<AuthSession>> login(String email, String password) =>
+      _loginUseCase(email, password);
 
   Future<Result<void>> logout() => _logoutUseCase();
 }

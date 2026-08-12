@@ -3,16 +3,16 @@ import '../../../../core/constants/app_dimens.dart';
 import '../../../../core/utils/validators.dart';
 
 /// Formulario de login – capa Presentation
-/// Usa username (DummyJSON requiere username, no email).
+/// HU 4.1 – Firebase Authentication usa correo electrónico y contraseña.
 class LoginForm extends StatefulWidget {
-  final TextEditingController usernameController;
+  final TextEditingController emailController;
   final TextEditingController passwordController;
   final GlobalKey<FormState>  formKey;
   final VoidCallback          onSubmit;
 
   const LoginForm({
     super.key,
-    required this.usernameController,
+    required this.emailController,
     required this.passwordController,
     required this.formKey,
     required this.onSubmit,
@@ -31,16 +31,17 @@ class _LoginFormState extends State<LoginForm> {
       key: widget.formKey,
       child: Column(
         children: [
-          // ─── Usuario ───────────────────────────────────────────────
+          // ─── Correo ────────────────────────────────────────────────
           TextFormField(
-            controller: widget.usernameController,
-            keyboardType: TextInputType.text,
+            controller: widget.emailController,
+            keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
-            validator: Validators.username,
+            autocorrect: false,
+            validator: Validators.email,
             decoration: const InputDecoration(
-              labelText: 'Usuario',
-              hintText: 'ej: emilys',
-              prefixIcon: Icon(Icons.person_outline),
+              labelText: 'Correo electrónico',
+              hintText: 'ej: walter@bam.com',
+              prefixIcon: Icon(Icons.mail_outline),
             ),
           ),
           const SizedBox(height: AppDimens.paddingMD),

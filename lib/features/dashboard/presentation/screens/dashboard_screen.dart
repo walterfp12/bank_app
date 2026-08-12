@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_dimens.dart';
@@ -208,11 +209,14 @@ class _DashboardContent extends StatelessWidget {
               ],
             ),
           ),
-          IconButton(
-            onPressed: () {},
-            icon: const Badge(
-              smallSize: 8,
-              child: Icon(Icons.notifications_outlined),
+          // HU 4.3 – Acceso a la bandeja de notificaciones push
+          Builder(
+            builder: (context) => IconButton(
+              onPressed: () => context.push('/notifications'),
+              icon: const Badge(
+                smallSize: 8,
+                child: Icon(Icons.notifications_outlined),
+              ),
             ),
           ),
         ],

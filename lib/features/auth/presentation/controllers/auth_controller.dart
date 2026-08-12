@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../../core/errors/app_exception.dart';
 import '../providers/auth_providers.dart';
 import '../states/auth_state.dart';
 
@@ -9,8 +10,8 @@ import '../states/auth_state.dart';
 /// 1. login()             → AuthService → emite loading / authenticated / error
 /// 2. logout()            → limpia sesión local → emite initial
 /// 3. tryRestoreSession() → restaura sesión persistida al arrancar la app
-/// 4. Timer de expiración → a los 2 min el token vence y se ejecuta logout()
-///    automáticamente; el RouterNotifier redirige al guard de GoRouter.
+/// 4. Timer de expiración → cuando el idToken de Firebase vence (1 h) se
+///    ejecuta logout() automáticamente y el RouterNotifier redirige al login.
 class AuthController extends Notifier<AuthState> {
   Timer? _expirationTimer;
 
@@ -23,17 +24,17 @@ class AuthController extends Notifier<AuthState> {
 
   // ─── Acciones ─────────────────────────────────────────────────────────────
 
-  Future<void> login(String username, String password) async {
+  Future<void> login(String email, String password) async {
     state = const AuthState.loading();
 
-    final result = await ref.read(authServiceProvider).login(username, password);
+    final result = await ref.read(authServiceProvider).login(email, password);
 
     result.when(
       success: (session) {
         state = AuthState.authenticated(session: session);
         _scheduleExpiration(session.expiresAt);
       },
-      failure: (error) => state = AuthState.error(message: error.toString()),
+      failure: (error) => state = AuthState.error(message: error.friendlyMessage),
     );
   }
 

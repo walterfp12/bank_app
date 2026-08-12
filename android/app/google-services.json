@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1058658076626",
+    "project_id": "bam-wallet-8d95f",
+    "storage_bucket": "bam-wallet-8d95f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058658076626:android:a5b0129abbe5b4fbccea0b",
+        "android_client_info": {
+          "package_name": "com.bankapp.bank_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB8lEtTu4kwQu9Cd64LJxytRjqNPq7wmwA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

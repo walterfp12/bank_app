@@ -31,6 +31,15 @@ dependencies:
   animations: ^2.0.11
   # Google Fonts
   google_fonts: ^6.2.1
+  # Firebase (Módulo 4)
+  firebase_core: ^4.13.0
+  firebase_auth: ^6.5.7            # HU 4.1 – Autenticación
+  cloud_firestore: ^6.8.0          # HU 4.2 – Historial paginado
+  firebase_messaging: ^16.5.0      # HU 4.3 – Push notifications
+  # Muestra la push cuando la app está en primer plano (HU 4.3)
+  flutter_local_notifications: ^22.3.0
+  # Almacenamiento seguro de sesión (HU 4.1)
+  flutter_secure_storage: ^9.2.4
 
 dev_dependencies:
   flutter_test:

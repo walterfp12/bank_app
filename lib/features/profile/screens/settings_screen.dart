@@ -5,9 +5,9 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_dimens.dart';
 import '../../../core/i18n/locale_controller.dart';
 import '../../../l10n/app_localizations.dart';
-import '../../../services/mock_data_service.dart';
-import '../../../services/user_profile.dart';
+import '../../auth/domain/entities/auth_user.dart';
 import '../../auth/presentation/controllers/auth_controller.dart';
+import '../../auth/presentation/states/auth_state.dart';
 
 /// HU 1.2 – Pantalla de Configuración / Perfil
 /// HU 2.3 – Logout via Riverpod AuthController
@@ -17,9 +17,14 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = MockDataService.currentUser;
     final l10n = AppLocalizations.of(context)!;
     final locale = ref.watch(localeControllerProvider);
+
+    // HU 4.1 – El perfil muestra el usuario real de Firebase Auth.
+    final authState = ref.watch(authControllerProvider);
+    final user = authState is AuthStateAuthenticated
+        ? authState.session.user
+        : const AuthUser(id: '', email: '');
 
     final currentLanguage = locale.languageCode == 'es'
         ? l10n.languageSpanish
@@ -186,7 +191,7 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildProfileHeader(UserProfile user) {
+  Widget _buildProfileHeader(AuthUser user) {
     return Container(
       padding: const EdgeInsets.all(AppDimens.paddingLG),
       decoration: BoxDecoration(
@@ -213,7 +218,7 @@ class SettingsScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  user.fullName,
+                  user.name,
                   style: GoogleFonts.inter(
                     fontWeight: FontWeight.w700,
                     fontSize: AppDimens.fontLG,

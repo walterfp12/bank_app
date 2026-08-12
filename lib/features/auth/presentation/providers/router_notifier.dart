@@ -11,6 +11,7 @@ const _protectedRoutes = {
   '/history',
   '/settings',
   '/agent',
+  '/notifications',
 };
 
 /// Puente entre Riverpod y GoRouter.

@@ -21,12 +21,11 @@ AuthSessionModel _$AuthSessionModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AuthSessionModel {
-  int get userId => throw _privateConstructorUsedError;
-  String get username => throw _privateConstructorUsedError;
+  /// uid de Firebase
+  String get userId => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
-  String get firstName => throw _privateConstructorUsedError;
-  String get lastName => throw _privateConstructorUsedError;
-  String get image => throw _privateConstructorUsedError;
+  String get displayName => throw _privateConstructorUsedError;
+  String get photoUrl => throw _privateConstructorUsedError;
   String get accessToken => throw _privateConstructorUsedError;
   String get refreshToken => throw _privateConstructorUsedError;
   String get expiresAt => throw _privateConstructorUsedError;
@@ -49,12 +48,10 @@ abstract class $AuthSessionModelCopyWith<$Res> {
   ) = _$AuthSessionModelCopyWithImpl<$Res, AuthSessionModel>;
   @useResult
   $Res call({
-    int userId,
-    String username,
+    String userId,
     String email,
-    String firstName,
-    String lastName,
-    String image,
+    String displayName,
+    String photoUrl,
     String accessToken,
     String refreshToken,
     String expiresAt,
@@ -77,11 +74,9 @@ class _$AuthSessionModelCopyWithImpl<$Res, $Val extends AuthSessionModel>
   @override
   $Res call({
     Object? userId = null,
-    Object? username = null,
     Object? email = null,
-    Object? firstName = null,
-    Object? lastName = null,
-    Object? image = null,
+    Object? displayName = null,
+    Object? photoUrl = null,
     Object? accessToken = null,
     Object? refreshToken = null,
     Object? expiresAt = null,
@@ -91,26 +86,18 @@ class _$AuthSessionModelCopyWithImpl<$Res, $Val extends AuthSessionModel>
             userId: null == userId
                 ? _value.userId
                 : userId // ignore: cast_nullable_to_non_nullable
-                      as int,
-            username: null == username
-                ? _value.username
-                : username // ignore: cast_nullable_to_non_nullable
                       as String,
             email: null == email
                 ? _value.email
                 : email // ignore: cast_nullable_to_non_nullable
                       as String,
-            firstName: null == firstName
-                ? _value.firstName
-                : firstName // ignore: cast_nullable_to_non_nullable
+            displayName: null == displayName
+                ? _value.displayName
+                : displayName // ignore: cast_nullable_to_non_nullable
                       as String,
-            lastName: null == lastName
-                ? _value.lastName
-                : lastName // ignore: cast_nullable_to_non_nullable
-                      as String,
-            image: null == image
-                ? _value.image
-                : image // ignore: cast_nullable_to_non_nullable
+            photoUrl: null == photoUrl
+                ? _value.photoUrl
+                : photoUrl // ignore: cast_nullable_to_non_nullable
                       as String,
             accessToken: null == accessToken
                 ? _value.accessToken
@@ -140,12 +127,10 @@ abstract class _$$AuthSessionModelImplCopyWith<$Res>
   @override
   @useResult
   $Res call({
-    int userId,
-    String username,
+    String userId,
     String email,
-    String firstName,
-    String lastName,
-    String image,
+    String displayName,
+    String photoUrl,
     String accessToken,
     String refreshToken,
     String expiresAt,
@@ -167,11 +152,9 @@ class __$$AuthSessionModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? userId = null,
-    Object? username = null,
     Object? email = null,
-    Object? firstName = null,
-    Object? lastName = null,
-    Object? image = null,
+    Object? displayName = null,
+    Object? photoUrl = null,
     Object? accessToken = null,
     Object? refreshToken = null,
     Object? expiresAt = null,
@@ -181,26 +164,18 @@ class __$$AuthSessionModelImplCopyWithImpl<$Res>
         userId: null == userId
             ? _value.userId
             : userId // ignore: cast_nullable_to_non_nullable
-                  as int,
-        username: null == username
-            ? _value.username
-            : username // ignore: cast_nullable_to_non_nullable
                   as String,
         email: null == email
             ? _value.email
             : email // ignore: cast_nullable_to_non_nullable
                   as String,
-        firstName: null == firstName
-            ? _value.firstName
-            : firstName // ignore: cast_nullable_to_non_nullable
+        displayName: null == displayName
+            ? _value.displayName
+            : displayName // ignore: cast_nullable_to_non_nullable
                   as String,
-        lastName: null == lastName
-            ? _value.lastName
-            : lastName // ignore: cast_nullable_to_non_nullable
-                  as String,
-        image: null == image
-            ? _value.image
-            : image // ignore: cast_nullable_to_non_nullable
+        photoUrl: null == photoUrl
+            ? _value.photoUrl
+            : photoUrl // ignore: cast_nullable_to_non_nullable
                   as String,
         accessToken: null == accessToken
             ? _value.accessToken
@@ -224,41 +199,39 @@ class __$$AuthSessionModelImplCopyWithImpl<$Res>
 class _$AuthSessionModelImpl extends _AuthSessionModel {
   const _$AuthSessionModelImpl({
     required this.userId,
-    required this.username,
     required this.email,
-    required this.firstName,
-    required this.lastName,
-    required this.image,
+    this.displayName = '',
+    this.photoUrl = '',
     required this.accessToken,
-    required this.refreshToken,
+    this.refreshToken = '',
     required this.expiresAt,
   }) : super._();
 
   factory _$AuthSessionModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$AuthSessionModelImplFromJson(json);
 
+  /// uid de Firebase
   @override
-  final int userId;
-  @override
-  final String username;
+  final String userId;
   @override
   final String email;
   @override
-  final String firstName;
+  @JsonKey()
+  final String displayName;
   @override
-  final String lastName;
-  @override
-  final String image;
+  @JsonKey()
+  final String photoUrl;
   @override
   final String accessToken;
   @override
+  @JsonKey()
   final String refreshToken;
   @override
   final String expiresAt;
 
   @override
   String toString() {
-    return 'AuthSessionModel(userId: $userId, username: $username, email: $email, firstName: $firstName, lastName: $lastName, image: $image, accessToken: $accessToken, refreshToken: $refreshToken, expiresAt: $expiresAt)';
+    return 'AuthSessionModel(userId: $userId, email: $email, displayName: $displayName, photoUrl: $photoUrl, accessToken: $accessToken, refreshToken: $refreshToken, expiresAt: $expiresAt)';
   }
 
   @override
@@ -267,14 +240,11 @@ class _$AuthSessionModelImpl extends _AuthSessionModel {
         (other.runtimeType == runtimeType &&
             other is _$AuthSessionModelImpl &&
             (identical(other.userId, userId) || other.userId == userId) &&
-            (identical(other.username, username) ||
-                other.username == username) &&
             (identical(other.email, email) || other.email == email) &&
-            (identical(other.firstName, firstName) ||
-                other.firstName == firstName) &&
-            (identical(other.lastName, lastName) ||
-                other.lastName == lastName) &&
-            (identical(other.image, image) || other.image == image) &&
+            (identical(other.displayName, displayName) ||
+                other.displayName == displayName) &&
+            (identical(other.photoUrl, photoUrl) ||
+                other.photoUrl == photoUrl) &&
             (identical(other.accessToken, accessToken) ||
                 other.accessToken == accessToken) &&
             (identical(other.refreshToken, refreshToken) ||
@@ -288,11 +258,9 @@ class _$AuthSessionModelImpl extends _AuthSessionModel {
   int get hashCode => Object.hash(
     runtimeType,
     userId,
-    username,
     email,
-    firstName,
-    lastName,
-    image,
+    displayName,
+    photoUrl,
     accessToken,
     refreshToken,
     expiresAt,
@@ -317,14 +285,12 @@ class _$AuthSessionModelImpl extends _AuthSessionModel {
 
 abstract class _AuthSessionModel extends AuthSessionModel {
   const factory _AuthSessionModel({
-    required final int userId,
-    required final String username,
+    required final String userId,
     required final String email,
-    required final String firstName,
-    required final String lastName,
-    required final String image,
+    final String displayName,
+    final String photoUrl,
     required final String accessToken,
-    required final String refreshToken,
+    final String refreshToken,
     required final String expiresAt,
   }) = _$AuthSessionModelImpl;
   const _AuthSessionModel._() : super._();
@@ -332,18 +298,15 @@ abstract class _AuthSessionModel extends AuthSessionModel {
   factory _AuthSessionModel.fromJson(Map<String, dynamic> json) =
       _$AuthSessionModelImpl.fromJson;
 
+  /// uid de Firebase
   @override
-  int get userId;
-  @override
-  String get username;
+  String get userId;
   @override
   String get email;
   @override
-  String get firstName;
+  String get displayName;
   @override
-  String get lastName;
-  @override
-  String get image;
+  String get photoUrl;
   @override
   String get accessToken;
   @override

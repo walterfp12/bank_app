@@ -5,9 +5,10 @@ import '../features/auth/presentation/providers/router_notifier.dart';
 import '../features/auth/presentation/screens/login_screen.dart';
 import '../features/dashboard/presentation/screens/dashboard_screen.dart';
 import '../features/transactions/screens/transfers_screen.dart';
-import '../features/transactions/screens/history_screen.dart';
+import '../features/transactions/presentation/screens/history_screen.dart';
 import '../features/profile/screens/settings_screen.dart';
 import '../features/agent/screens/agent_chat_screen.dart';
+import '../features/notifications/presentation/screens/notifications_screen.dart';
 import 'app_shell.dart';
 
 /// HU 1.2 – Navegación de la aplicación con GoRouter
@@ -36,6 +37,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path:    '/agent',
         builder: (context, state) => const AgentChatScreen(),
+      ),
+
+      // ── Notificaciones push – HU 4.3 ──────────────────────────────────────
+      GoRoute(
+        path:    '/notifications',
+        builder: (context, state) => const NotificationsScreen(),
       ),
 
       // ── Shell con BottomNavigationBar ─────────────────────────────────────

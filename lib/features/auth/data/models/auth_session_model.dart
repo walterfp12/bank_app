@@ -5,52 +5,47 @@ import '../../domain/entities/auth_user.dart';
 part 'auth_session_model.freezed.dart';
 part 'auth_session_model.g.dart';
 
-/// Modelo de sesión para persistencia en SharedPreferences – capa Data
-/// Permite serializar/deserializar la sesión completa como JSON.
+/// Modelo de sesión – capa Data (Freezed + JSON).
+///
+/// Es lo que se serializa hacia el almacenamiento seguro (HU 4.1) y lo que
+/// produce el DataSource de Firebase. `toDomain()` lo convierte en entidad.
 @freezed
 class AuthSessionModel with _$AuthSessionModel {
+  const AuthSessionModel._();
+
   const factory AuthSessionModel({
-    required int    userId,
-    required String username,
+    /// uid de Firebase
+    required String userId,
     required String email,
-    required String firstName,
-    required String lastName,
-    required String image,
+    @Default('') String displayName,
+    @Default('') String photoUrl,
     required String accessToken,
-    required String refreshToken,
+    @Default('') String refreshToken,
     required String expiresAt, // ISO 8601
   }) = _AuthSessionModel;
 
   factory AuthSessionModel.fromJson(Map<String, dynamic> json) =>
       _$AuthSessionModelFromJson(json);
 
-  const AuthSessionModel._();
-
-  /// Convierte al modelo de dominio
   AuthSession toDomain() => AuthSession(
         user: AuthUser(
-          id:        userId,
-          username:  username,
-          email:     email,
-          firstName: firstName,
-          lastName:  lastName,
-          image:     image,
+          id: userId,
+          email: email,
+          displayName: displayName,
+          photoUrl: photoUrl,
         ),
-        accessToken:  accessToken,
+        accessToken: accessToken,
         refreshToken: refreshToken,
-        expiresAt:    DateTime.parse(expiresAt),
+        expiresAt: DateTime.parse(expiresAt),
       );
 
-  /// Construye desde la entidad de dominio
   static AuthSessionModel fromDomain(AuthSession session) => AuthSessionModel(
-        userId:       session.user.id,
-        username:     session.user.username,
-        email:        session.user.email,
-        firstName:    session.user.firstName,
-        lastName:     session.user.lastName,
-        image:        session.user.image,
-        accessToken:  session.accessToken,
+        userId: session.user.id,
+        email: session.user.email,
+        displayName: session.user.displayName,
+        photoUrl: session.user.photoUrl,
+        accessToken: session.accessToken,
         refreshToken: session.refreshToken,
-        expiresAt:    session.expiresAt.toIso8601String(),
+        expiresAt: session.expiresAt.toIso8601String(),
       );
 }
